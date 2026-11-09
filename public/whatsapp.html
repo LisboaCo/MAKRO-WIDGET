@@ -12,8 +12,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#075e54">
   <meta name="format-detection" content="telephone=no">
-  <title>Makro Odontologia em Ceilândia | Fale com a equipe</title>
-  <meta name="description" content="Converse com a equipe da Makro Odontologia Integrada em Ceilândia e continue o atendimento pelo WhatsApp.">
+  <title>Makro Odontologia | Fale com a equipe</title>
+  <meta name="description" content="Converse com a equipe da Makro Odontologia Integrada e continue o atendimento pelo WhatsApp.">
   <!-- REMOVER na publicação -->
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" href="assets/logo-makro.png">
@@ -245,7 +245,7 @@
             <img class="logo" src="assets/logo-makro-branca.png" alt="Makro Odontologia Integrada" width="560" height="179">
             <svg class="verified" viewBox="0 0 24 24" aria-hidden="true"><path fill="#53bdeb" d="M12 1.8 14.3 4l3.1-.4.9 3 2.9 1.2-.6 3.1L22 13l-2.3 2.1.1 3.1-3 .9-1.4 2.8-3-1.1-3 1.1-1.4-2.8-3-.9.1-3.1L2 13l1.4-2.1-.6-3.1 2.9-1.2.9-3 3.1.4Z"/><path fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m8.2 12.2 2.6 2.6 5-5.2"/></svg>
           </h1>
-          <span class="status" id="status" aria-hidden="true">Ceilândia · online</span>
+          <span class="status" id="status" aria-hidden="true">online</span>
         </div>
         <a class="head-link" id="headWa" href="#" aria-label="Abrir direto no WhatsApp" title="Abrir direto no WhatsApp" target="_blank" rel="noopener noreferrer" data-placement="header">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2.5c-5.23 0-9.48 4.24-9.48 9.47 0 1.67.44 3.3 1.27 4.74L2.5 21.5l4.92-1.29a9.45 9.45 0 0 0 4.62 1.18c5.23 0 9.48-4.24 9.48-9.47 0-2.53-.99-4.91-2.78-6.7a9.4 9.4 0 0 0-6.7-2.72Zm0 17.36a7.9 7.9 0 0 1-4.02-1.1l-.29-.17-2.92.77.78-2.85-.19-.29a7.85 7.85 0 0 1-1.2-4.2c0-4.34 3.54-7.87 7.89-7.87 2.1 0 4.08.82 5.57 2.31a7.82 7.82 0 0 1 2.31 5.57c0 4.34-3.54 7.83-7.93 7.83Zm4.33-5.87c-.24-.12-1.4-.69-1.62-.77-.22-.08-.38-.12-.53.12-.16.24-.61.77-.75.93-.14.16-.28.18-.51.06-.24-.12-1-.37-1.9-1.18-.7-.62-1.18-1.4-1.31-1.63-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.53-1.28-.73-1.75-.19-.46-.39-.4-.53-.4h-.46c-.16 0-.42.06-.63.3-.22.24-.83.81-.83 1.97s.85 2.29.97 2.45c.12.16 1.67 2.55 4.05 3.58.57.24 1.01.39 1.35.5.57.18 1.09.15 1.5.09.46-.07 1.4-.57 1.6-1.13.2-.55.2-1.03.14-1.13-.06-.1-.22-.16-.46-.28Z"/></svg>
@@ -281,12 +281,41 @@
        - MODE: 'prelaunch' (lista de interesse) | 'open' (solicitar avaliacao)
          Troca manual, nunca pelo relogio (briefing §4).
        ============================================================ */
+    /* Uma pagina serve varias cidades: a cidade vem do link (?cidade=slug).
+       Para adicionar uma cidade, copie um bloco abaixo. Sem ?cidade (ou slug
+       desconhecido) a pagina usa DEFAULT, sem citar nenhuma cidade.
+         name    nome exibido (opcional; vazio = nao cita cidade)
+         phone   WhatsApp da unidade, DDI+DDD+numero, so digitos
+         mode    'prelaunch' (lista de interesse) | 'open' (marcar consulta)
+         hours   texto de atendimento confirmado (opcional; vazio = nao cita)
+         regions lista para "Onde voce mora?" (opcional; vazio = nao pergunta) */
+    const DEFAULT = {
+      name: '',
+      phone: '556136862724',
+      mode: 'prelaunch',
+      hours: '',
+      regions: []
+    };
+    const CITIES = {
+      ceilandia: {
+        name: 'Ceilândia',
+        phone: '556136862724',
+        mode: 'prelaunch',
+        hours: 'Atendimento de segunda a sábado (sábado até 12h). Os horários completos são confirmados pela equipe.',
+        regions: ['Ceilândia', 'Sol Nascente/Pôr do Sol', 'Águas Lindas', 'Taguatinga', 'Outra região']
+      }
+    };
+    const slug = (new URLSearchParams(location.search).get('cidade') || '')
+      .toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9-]/g, '');
+    const CITY = Object.assign({}, DEFAULT, CITIES[slug] || {});
     const CONFIG = {
-      PHONE: '556136862724',
-      MODE: 'prelaunch',
+      PHONE: CITY.phone,
+      MODE: CITY.mode,
       PAGE_TYPE: 'launch_chat'
     };
     const OPEN = CONFIG.MODE === 'open';
+    const inCity = CITY.name ? ' em ' + CITY.name : '';   // " em X" ou ""
+    document.title = 'Makro Odontologia' + (CITY.name ? ' ' + CITY.name : '') + ' | Fale com a equipe';
 
     /* ---------- dataLayer: allowlist estrita (so page_type + placement) ---------- */
     window.dataLayer = window.dataLayer || [];
@@ -303,6 +332,8 @@
     const headWa = document.getElementById('headWa');
 
     const answers = { interest: '', region: '', name: '' };
+    const ONLINE = CITY.name ? CITY.name + ' · online' : 'online';
+    statusEl.textContent = ONLINE;
     const sleep = (ms) => new Promise((r) => setTimeout(r, reduceMotion ? Math.min(ms, 60) : ms));
     const clock = () => new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
     const scrollDown = () => chat.scrollTo({ top: chat.scrollHeight });
@@ -314,16 +345,18 @@
     function waUrl(text) {
       return 'https://wa.me/' + CONFIG.PHONE + '?text=' + encodeURIComponent(text);
     }
+    const fromPage = 'Vim pela página da Makro' + (CITY.name ? ' ' + CITY.name : '');
     const baseText = OPEN
-      ? 'Olá! Vim pela página da Makro Ceilândia e gostaria de marcar uma consulta.'
-      : 'Olá! Vim pela página da Makro Ceilândia e gostaria de entrar na lista de interesse.';
+      ? 'Olá! ' + fromPage + ' e gostaria de marcar uma consulta.'
+      : 'Olá! ' + fromPage + ' e gostaria de entrar na lista de interesse.';
     headWa.href = waUrl(baseText);
     headWa.addEventListener('click', () => track('whatsapp_click', 'header'));
 
     function leadText() {
       const goal = OPEN ? 'marcar uma consulta' : 'entrar na lista de interesse';
-      return 'Olá! Vim pela página da Makro Ceilândia. Meu nome é ' + answers.name +
-        ', moro em ' + answers.region + ' e tenho interesse em: ' + answers.interest +
+      return 'Olá! ' + fromPage + '. Meu nome é ' + answers.name +
+        (answers.region ? ', moro em ' + answers.region : '') +
+        ' e tenho interesse em: ' + answers.interest +
         '. Gostaria de ' + goal + '.';
     }
 
@@ -356,7 +389,7 @@
       scrollDown();
       await sleep(Math.min(1400, 550 + text.length * 10));
       typing.remove();
-      statusEl.textContent = 'Ceilândia · online';
+      statusEl.textContent = ONLINE;
       statusEl.classList.remove('is-typing');
       bubble('in', text);
       await sleep(260);
@@ -448,13 +481,12 @@
       { label: 'Preciso de orientação', value: 'Preciso de orientação',
         reply: 'Sem problema. A equipe orienta qual é o melhor próximo passo para você.' }
     ];
-    const REGIONS = ['Ceilândia', 'Sol Nascente/Pôr do Sol', 'Águas Lindas', 'Taguatinga', 'Outra região'];
 
     const FAQ = [
       { label: 'Vocês têm financiamento?',
         a: 'Há possibilidades de pagamento e financiamento próprio. Aprovação, limites, prazos e demais condições estão sujeitos à análise e às regras vigentes.' },
-      { label: 'Atendem aos sábados?',
-        a: 'Sim. O atendimento aos sábados foi previsto até as 12h. A equipe confirma os horários disponíveis com você.' },
+      { label: 'Quais os horários?',
+        a: CITY.hours || 'Os horários de atendimento são confirmados pela equipe quando você continuar a conversa.' },
       { label: 'Já fica agendado?',
         a: OPEN
           ? 'Ainda não. Depois do seu contato, a equipe apresenta os horários e confirma o agendamento conforme a disponibilidade.'
@@ -486,11 +518,11 @@
     async function run() {
       track('lp_view', 'chat');
       await sleep(500);
-      await say('Olá! Somos a equipe da Makro Odontologia Integrada, aqui em Ceilândia.');
+      await say('Olá! Somos a equipe da Makro Odontologia Integrada.');
       await say(OPEN
-        ? 'Nossa unidade já está em Ceilândia. Por aqui você solicita sua avaliação e a equipe apresenta os horários disponíveis.'
-        : 'Nossa unidade de Ceilândia está chegando. Por aqui você entra na lista de interesse e recebe o contato da equipe quando a agenda abrir.');
-      await say('Atendimento de segunda a sábado (sábado até 12h). Os horários completos são confirmados pela equipe.');
+        ? 'Nossa nova unidade' + inCity + ' já está de portas abertas. Por aqui você solicita sua avaliação e a equipe apresenta os horários disponíveis.'
+        : 'Nossa nova unidade' + inCity + ' está chegando. Por aqui você entra na lista de interesse e recebe o contato da equipe quando a agenda abrir.');
+      await say(CITY.hours || 'Os horários de atendimento são confirmados pela equipe.');
       await say('Pra começar: qual tratamento você procura?');
 
       const interest = await choose(INTERESTS, 'Qual tratamento você procura?');
@@ -499,12 +531,14 @@
       await userSays(interest.label);
       await say(interest.reply);
 
-      await say('Onde você mora?');
-      const region = await choose(REGIONS.map((r) => ({ label: r })), 'Onde você mora?');
-      answers.region = region.label;
-      track('chat_step', 'region');
-      await userSays(region.label);
-      await say('Anotado.');
+      if (CITY.regions.length) {
+        await say('Onde você mora?');
+        const region = await choose(CITY.regions.map((r) => ({ label: r })), 'Onde você mora?');
+        answers.region = region.label;
+        track('chat_step', 'region');
+        await userSays(region.label);
+        await say('Anotado.');
+      }
 
       await say('E como podemos chamar você?');
       const name = await askText('Digite seu nome');
