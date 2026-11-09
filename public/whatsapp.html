@@ -284,20 +284,15 @@
        desconhecido) a pagina usa DEFAULT, sem citar nenhuma cidade.
          name    nome exibido (opcional; vazio = nao cita cidade)
          phone   WhatsApp da unidade, DDI+DDD+numero, so digitos
-         hours   texto de atendimento confirmado (opcional; vazio = nao cita)
-         regions lista para "Onde voce mora?" (opcional; vazio = nao pergunta) */
+*/
     const DEFAULT = {
       name: '',
       phone: '556136862724',
-      hours: '',
-      regions: []
     };
     const CITIES = {
       ceilandia: {
         name: 'Ceilândia',
         phone: '556136862724',
-        hours: 'Atendimento de segunda a sábado (sábado até 12h). Os horários completos são confirmados pela equipe.',
-        regions: ['Ceilândia', 'Sol Nascente/Pôr do Sol', 'Águas Lindas', 'Taguatinga', 'Outra região']
       }
     };
     const slug = (new URLSearchParams(location.search).get('cidade') || '')
@@ -323,7 +318,7 @@
     const statusEl = document.getElementById('status');
     const headWa = document.getElementById('headWa');
 
-    const answers = { interest: '', region: '', name: '' };
+    const answers = { interest: '', name: '' };
     const ONLINE = CITY.name ? CITY.name + ' · online' : 'online';
     statusEl.textContent = ONLINE;
     const sleep = (ms) => new Promise((r) => setTimeout(r, reduceMotion ? Math.min(ms, 60) : ms));
@@ -345,7 +340,6 @@
     function leadText() {
       const goal = 'marcar uma consulta';
       return 'Olá! ' + fromPage + '. Meu nome é ' + answers.name +
-        (answers.region ? ', moro em ' + answers.region : '') +
         ' e tenho interesse em: ' + answers.interest +
         '. Gostaria de ' + goal + '.';
     }
@@ -462,86 +456,32 @@
        financiamento sempre "sujeito a analise".
        ============================================================ */
     const INTERESTS = [
-      { label: 'Implantes ou protocolo', value: 'Implantes ou protocolo',
-        reply: 'Certo. Para implantes e protocolo, tudo começa com uma avaliação individual: a equipe explica as possibilidades para o seu caso.' },
-      { label: 'Próteses', value: 'Próteses e overdenture',
-        reply: 'Certo. Para próteses e overdenture, a avaliação define as alternativas conforme as condições da sua boca.' },
-      { label: 'Facetas ou lentes', value: 'Facetas ou lentes',
-        reply: 'Certo. Facetas e lentes pedem um planejamento estético individual, com foco em naturalidade e saúde bucal.' },
-      { label: 'Preciso de orientação', value: 'Preciso de orientação',
-        reply: 'Sem problema. A equipe orienta qual é o melhor próximo passo para você.' }
+      { label: 'Implantes ou protocolo', value: 'Implantes ou protocolo' },
+      { label: 'Próteses', value: 'Próteses e overdenture' },
+      { label: 'Facetas ou lentes', value: 'Facetas ou lentes' },
+      { label: 'Preciso de orientação', value: 'Preciso de orientação' }
     ];
-
-    const FAQ = [
-      { label: 'Vocês têm financiamento?',
-        a: 'Há possibilidades de pagamento e financiamento próprio. Aprovação, limites, prazos e demais condições estão sujeitos à análise e às regras vigentes.' },
-      { label: 'Quais os horários?',
-        a: CITY.hours || 'Os horários de atendimento são confirmados pela equipe quando você continuar a conversa.' },
-      { label: 'Já fica agendado?',
-        a: 'Ainda não. Depois do seu contato, a equipe apresenta os horários e confirma o agendamento conforme a disponibilidade.' },
-      { label: 'Quanto custa?',
-        a: 'O valor depende do seu caso. Por isso, o orçamento é apresentado depois da avaliação e da definição do plano de tratamento.' }
-    ];
-
-    async function faqLoop(waHref) {
-      for (;;) {
-        const pick = await choose(
-          FAQ.map((f) => ({ label: f.label, faq: f }))
-            .concat([{ label: 'Voltar ao WhatsApp', back: true, ghost: true }]),
-          'Dúvidas frequentes'
-        );
-        if (pick.back) {
-          await userSays(pick.label);
-          await say('Quando quiser, é só tocar no botão e continuar com a equipe.');
-          ctaCard('Continue a conversa com a equipe da Makro.', 'Marcar consulta no WhatsApp', waHref, 'chat_final');
-          await sleep(200);
-          continue;
-        }
-        await userSays(pick.label);
-        track('faq_open', 'chat');
-        await say(pick.faq.a);
-      }
-    }
 
     async function run() {
       track('lp_view', 'chat');
       await sleep(500);
       await say('Olá! Somos a equipe da Makro Odontologia Integrada.');
-      await say('Vou te ajudar a agendar sua avaliação. Leva menos de um minuto.');
-      if (CITY.hours) await say(CITY.hours);
-      await say('Pra começar: qual tratamento você procura?');
+      await say('Qual tratamento você procura?');
 
       const interest = await choose(INTERESTS, 'Qual tratamento você procura?');
       answers.interest = interest.value;
       track('chat_step', 'interest');
       await userSays(interest.label);
-      await say(interest.reply);
 
-      if (CITY.regions.length) {
-        await say('Onde você mora?');
-        const region = await choose(CITY.regions.map((r) => ({ label: r })), 'Onde você mora?');
-        answers.region = region.label;
-        track('chat_step', 'region');
-        await userSays(region.label);
-        await say('Anotado.');
-      }
-
-      await say('E como podemos chamar você?');
+      await say('Certo! E como podemos chamar você?');
       const name = await askText('Digite seu nome');
       answers.name = name;
       track('chat_step', 'name');
       await userSays(name);
 
-      const first = name.split(' ')[0];
-      await say('Prazer, ' + first + '!');
-      await say('Tudo certo. Toque no botão abaixo para continuar com a equipe pelo WhatsApp e escolher o melhor horário.');
-
-      const href = waUrl(leadText());
-      ctaCard('Você será direcionado ao WhatsApp. Ao continuar, você autoriza o uso dos dados informados para o atendimento, conforme a Política de Privacidade.',
-        'Marcar consulta no WhatsApp', href, 'chat_final');
-      await sleep(500);
-      await say('Se tiver alguma dúvida antes, escolha uma opção abaixo.');
-      await faqLoop(href);
+      await say('Prazer, ' + name.split(' ')[0] + '! Toque no botão abaixo para continuar com a equipe pelo WhatsApp.');
+      ctaCard('Ao continuar, você autoriza o uso dos dados informados para o atendimento, conforme a Política de Privacidade.',
+        'Continuar no WhatsApp', waUrl(leadText()), 'chat_final');
     }
 
     run();
