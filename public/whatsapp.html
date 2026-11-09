@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-K86KDB36');</script>
+  <!-- End Google Tag Manager -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#075e54">
+  <meta name="format-detection" content="telephone=no">
+  <title>Makro Odontologia em Ceilândia | Fale com a equipe</title>
+  <meta name="description" content="Converse com a equipe da Makro Odontologia Integrada em Ceilândia e continue o atendimento pelo WhatsApp.">
+  <!-- REMOVER na publicação -->
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="assets/logo-makro.png">
+
+  <style>
+    :root {
+      --wa-head: #075e54;
+      --wa-chat: #ece5dd;
+      --wa-bubble-in: #ffffff;
+      --wa-bubble-out: #d9fdd3;
+      --wa-ink: #111b21;
+      --wa-ink-soft: #54656f;
+      --wa-time: #667781;
+      --wa-foot: #f0f2f5;
+      --wa-cta: #0d7a45;
+      --wa-cta-hover: #0a6538;
+      --navy: #01165a;
+      --chip-border: #b9d9c9;
+      --focus: #01165a;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.4;
+      color: var(--wa-ink);
+      background: #d1d7db;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, a { font: inherit; }
+
+    /* Desktop: faixa verde no topo + "celular" centralizado. Mobile: tela cheia. */
+    .stage {
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      justify-content: center;
+      background: linear-gradient(#0a7c6f 0, #0a7c6f 128px, #d1d7db 128px);
+    }
+    .app {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 520px;
+      height: 100%;
+      background: var(--wa-chat);
+      overflow: hidden;
+    }
+    @media (min-width: 640px) {
+      .stage { padding: 20px 0; }
+      .app { border-radius: 12px; box-shadow: 0 6px 24px rgba(11, 20, 26, .22); }
+    }
+
+    /* ---------- Cabecalho ---------- */
+    .head {
+      flex: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      padding-top: calc(10px + env(safe-area-inset-top, 0px));
+      background: var(--wa-head);
+      color: #fff;
+    }
+    .who { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+    .logo-wrap { margin: 0; display: flex; align-items: center; gap: 8px; }
+    .logo { display: block; height: 32px; width: auto; }
+    .verified { width: 16px; height: 16px; flex: none; }
+    .status { font-size: .78rem; color: rgba(255,255,255,.9); line-height: 1.2; }
+    .status.is-typing { font-style: italic; color: #b9f3d0; }
+    .head-link {
+      flex: none; display: grid; place-items: center; width: 44px; height: 44px;
+      border-radius: 50%; color: #fff; text-decoration: none;
+    }
+    .head-link:hover { background: rgba(255,255,255,.14); }
+    .head-link svg { width: 24px; height: 24px; }
+
+    /* ---------- Conversa ---------- */
+    .chat {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 14px 12px 12px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scroll-behavior: smooth;
+      background-color: var(--wa-chat);
+      background-image: radial-gradient(rgba(7,94,84,.07) 1px, transparent 1.3px);
+      background-size: 18px 18px;
+    }
+    .day, .notice {
+      align-self: center;
+      max-width: 92%;
+      padding: 5px 12px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.92);
+      color: var(--wa-ink-soft);
+      font-size: .75rem;
+      text-align: center;
+      box-shadow: 0 1px 1px rgba(11,20,26,.08);
+    }
+    .notice { background: #fff5c4; color: #54481a; margin: 4px 0 8px; line-height: 1.35; }
+
+    .msg {
+      position: relative;
+      max-width: 86%;
+      padding: 7px 10px 5px 11px;
+      border-radius: 12px;
+      font-size: .95rem;
+      box-shadow: 0 1px 1px rgba(11,20,26,.13);
+      animation: pop .26s cubic-bezier(.16,1,.3,1) both;
+      overflow-wrap: anywhere;
+    }
+    .msg p { margin: 0; }
+    .msg.in { align-self: flex-start; background: var(--wa-bubble-in); border-top-left-radius: 2px; }
+    .msg.out { align-self: flex-end; background: var(--wa-bubble-out); border-top-right-radius: 2px; }
+    .msg .meta {
+      display: flex; justify-content: flex-end; align-items: center; gap: 3px;
+      margin-top: 1px; color: var(--wa-time); font-size: .68rem; line-height: 1.2;
+    }
+    .msg .ticks { width: 16px; height: 11px; color: #53bdeb; }
+
+    .typing {
+      align-self: flex-start;
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 13px 14px;
+      border-radius: 2px 12px 12px 12px;
+      background: #fff;
+      box-shadow: 0 1px 1px rgba(11,20,26,.13);
+      animation: pop .2s ease both;
+    }
+    .typing i { width: 7px; height: 7px; border-radius: 50%; background: #8696a0; animation: dot 1.1s ease-in-out infinite; }
+    .typing i:nth-child(2) { animation-delay: .15s; }
+    .typing i:nth-child(3) { animation-delay: .3s; }
+
+    /* Cartao do botao final */
+    .msg.card { padding: 8px 8px 6px; max-width: 92%; width: 100%; }
+    .card-text { padding: 2px 4px 8px; }
+    .cta {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; min-height: 52px; padding: 12px 18px;
+      border-radius: 999px; border: 0;
+      background: var(--wa-cta); color: #fff;
+      font-weight: 700; font-size: 1rem; text-decoration: none; text-align: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(13,122,69,.28), 0 12px 24px -12px rgba(13,122,69,.7);
+      transition: background-color .15s ease, transform .15s ease;
+    }
+    .cta:hover { background: var(--wa-cta-hover); }
+    .cta:active { transform: translateY(1px); }
+    .cta svg { width: 22px; height: 22px; flex: none; }
+
+    /* ---------- Rodape: respostas rapidas + composer ---------- */
+    .dock {
+      flex: none;
+      background: var(--wa-foot);
+      border-top: 1px solid rgba(11,20,26,.08);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    .choices {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      padding: 10px 12px 2px;
+      max-height: 42vh; overflow-y: auto;
+    }
+    .choices[hidden] { display: none; }
+    .chip {
+      min-height: 44px;
+      padding: 10px 16px;
+      border: 1.5px solid var(--chip-border);
+      border-radius: 999px;
+      background: #fff;
+      color: #075e54;
+      font-weight: 600; font-size: .92rem;
+      cursor: pointer;
+      animation: pop .28s cubic-bezier(.16,1,.3,1) both;
+      transition: background-color .15s ease, border-color .15s ease;
+    }
+    .chip:hover { background: #e7f6ee; border-color: #0d7a45; }
+    .chip.ghost { color: var(--wa-ink-soft); border-color: #cfd8dc; font-weight: 500; }
+
+    .composer { display: flex; align-items: center; gap: 8px; padding: 10px 12px 12px; }
+    .field {
+      flex: 1; min-width: 0; min-height: 46px;
+      padding: 10px 16px;
+      border: 0; border-radius: 999px;
+      background: #fff; color: var(--wa-ink);
+      font-size: 1rem; /* 16px evita zoom no iOS */
+    }
+    .field::placeholder { color: #8696a0; }
+    .field:disabled { background: #e9edef; }
+    .send {
+      flex: none; display: grid; place-items: center;
+      width: 46px; height: 46px; padding: 0;
+      border: 0; border-radius: 50%;
+      background: var(--wa-cta); color: #fff; cursor: pointer;
+      transition: background-color .15s ease, opacity .15s ease;
+    }
+    .send:hover:not(:disabled) { background: var(--wa-cta-hover); }
+    .send:disabled { background: #aebac1; cursor: default; }
+    .send svg { width: 22px; height: 22px; }
+
+    :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+    .head :focus-visible { outline-color: #fff; }
+
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    @keyframes pop { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    @keyframes dot { 0%,60%,100% { transform: translateY(0); opacity: .45; } 30% { transform: translateY(-4px); opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) {
+      .chat { scroll-behavior: auto; }
+      .msg, .typing, .chip { animation: none; }
+      .typing i { animation: none; opacity: .7; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K86KDB36" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <div class="stage">
+    <main class="app">
+      <header class="head">
+        <div class="who">
+          <h1 class="logo-wrap">
+            <img class="logo" src="assets/logo-makro-branca.png" alt="Makro Odontologia Integrada" width="560" height="179">
+            <svg class="verified" viewBox="0 0 24 24" aria-hidden="true"><path fill="#53bdeb" d="M12 1.8 14.3 4l3.1-.4.9 3 2.9 1.2-.6 3.1L22 13l-2.3 2.1.1 3.1-3 .9-1.4 2.8-3-1.1-3 1.1-1.4-2.8-3-.9.1-3.1L2 13l1.4-2.1-.6-3.1 2.9-1.2.9-3 3.1.4Z"/><path fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m8.2 12.2 2.6 2.6 5-5.2"/></svg>
+          </h1>
+          <span class="status" id="status" aria-hidden="true">Ceilândia · online</span>
+        </div>
+        <a class="head-link" id="headWa" href="#" aria-label="Abrir direto no WhatsApp" title="Abrir direto no WhatsApp" target="_blank" rel="noopener noreferrer" data-placement="header">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2.5c-5.23 0-9.48 4.24-9.48 9.47 0 1.67.44 3.3 1.27 4.74L2.5 21.5l4.92-1.29a9.45 9.45 0 0 0 4.62 1.18c5.23 0 9.48-4.24 9.48-9.47 0-2.53-.99-4.91-2.78-6.7a9.4 9.4 0 0 0-6.7-2.72Zm0 17.36a7.9 7.9 0 0 1-4.02-1.1l-.29-.17-2.92.77.78-2.85-.19-.29a7.85 7.85 0 0 1-1.2-4.2c0-4.34 3.54-7.87 7.89-7.87 2.1 0 4.08.82 5.57 2.31a7.82 7.82 0 0 1 2.31 5.57c0 4.34-3.54 7.83-7.93 7.83Zm4.33-5.87c-.24-.12-1.4-.69-1.62-.77-.22-.08-.38-.12-.53.12-.16.24-.61.77-.75.93-.14.16-.28.18-.51.06-.24-.12-1-.37-1.9-1.18-.7-.62-1.18-1.4-1.31-1.63-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.53-1.28-.73-1.75-.19-.46-.39-.4-.53-.4h-.46c-.16 0-.42.06-.63.3-.22.24-.83.81-.83 1.97s.85 2.29.97 2.45c.12.16 1.67 2.55 4.05 3.58.57.24 1.01.39 1.35.5.57.18 1.09.15 1.5.09.46-.07 1.4-.57 1.6-1.13.2-.55.2-1.03.14-1.13-.06-.1-.22-.16-.46-.28Z"/></svg>
+        </a>
+      </header>
+
+      <div class="chat" id="chat" role="log" aria-live="polite" aria-label="Conversa com a Makro">
+        <div class="day">Hoje</div>
+        <div class="notice">As conversas desta página servem para direcionar seu atendimento. Plano e valores só após avaliação profissional.</div>
+      </div>
+
+      <div class="dock">
+        <div class="choices" id="choices" role="group" aria-label="Respostas rápidas" hidden></div>
+        <form class="composer" id="composer" autocomplete="off" novalidate>
+          <label class="sr-only" for="field">Sua mensagem</label>
+          <input class="field" id="field" type="text" inputmode="text" autocapitalize="words" maxlength="60" placeholder="Escolha uma opção acima" disabled>
+          <button class="send" id="send" type="submit" aria-label="Enviar mensagem" disabled>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.4 20.4 21 12 3.4 3.6 3.3 10l12.6 2-12.6 2z"/></svg>
+          </button>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script>
+  (() => {
+    'use strict';
+
+    /* ============================================================
+       CONFIGURACAO
+       - PHONE: DDI+DDD+numero, so digitos. Padrao = telefone da unidade
+         usado no app.py da LP (WHATSAPP_NUMBER). Trocar pelo oficial.
+       - MODE: 'prelaunch' (lista de interesse) | 'open' (solicitar avaliacao)
+         Troca manual, nunca pelo relogio (briefing §4).
+       ============================================================ */
+    const CONFIG = {
+      PHONE: '556136862724',
+      MODE: 'prelaunch',
+      PAGE_TYPE: 'launch_chat'
+    };
+    const OPEN = CONFIG.MODE === 'open';
+
+    /* ---------- dataLayer: allowlist estrita (so page_type + placement) ---------- */
+    window.dataLayer = window.dataLayer || [];
+    const track = (event, placement) =>
+      window.dataLayer.push({ event, page_type: CONFIG.PAGE_TYPE, placement: placement || 'chat' });
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const chat = document.getElementById('chat');
+    const choicesEl = document.getElementById('choices');
+    const composer = document.getElementById('composer');
+    const field = document.getElementById('field');
+    const sendBtn = document.getElementById('send');
+    const statusEl = document.getElementById('status');
+    const headWa = document.getElementById('headWa');
+
+    const answers = { interest: '', region: '', name: '' };
+    const sleep = (ms) => new Promise((r) => setTimeout(r, reduceMotion ? Math.min(ms, 60) : ms));
+    const clock = () => new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    const scrollDown = () => chat.scrollTo({ top: chat.scrollHeight });
+
+    const ICON_WA = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2.5c-5.23 0-9.48 4.24-9.48 9.47 0 1.67.44 3.3 1.27 4.74L2.5 21.5l4.92-1.29a9.45 9.45 0 0 0 4.62 1.18c5.23 0 9.48-4.24 9.48-9.47 0-2.53-.99-4.91-2.78-6.7a9.4 9.4 0 0 0-6.7-2.72Zm0 17.36a7.9 7.9 0 0 1-4.02-1.1l-.29-.17-2.92.77.78-2.85-.19-.29a7.85 7.85 0 0 1-1.2-4.2c0-4.34 3.54-7.87 7.89-7.87 2.1 0 4.08.82 5.57 2.31a7.82 7.82 0 0 1 2.31 5.57c0 4.34-3.54 7.83-7.93 7.83Zm4.33-5.87c-.24-.12-1.4-.69-1.62-.77-.22-.08-.38-.12-.53.12-.16.24-.61.77-.75.93-.14.16-.28.18-.51.06-.24-.12-1-.37-1.9-1.18-.7-.62-1.18-1.4-1.31-1.63-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.53-1.28-.73-1.75-.19-.46-.39-.4-.53-.4h-.46c-.16 0-.42.06-.63.3-.22.24-.83.81-.83 1.97s.85 2.29.97 2.45c.12.16 1.67 2.55 4.05 3.58.57.24 1.01.39 1.35.5.57.18 1.09.15 1.5.09.46-.07 1.4-.57 1.6-1.13.2-.55.2-1.03.14-1.13-.06-.1-.22-.16-.46-.28Z"/></svg>';
+    const TICKS = '<svg class="ticks" viewBox="0 0 16 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m1 6 3 3 6-7M6 8l1 1 6-7"/></svg>';
+
+    /* ---------- WhatsApp ---------- */
+    function waUrl(text) {
+      return 'https://wa.me/' + CONFIG.PHONE + '?text=' + encodeURIComponent(text);
+    }
+    const baseText = OPEN
+      ? 'Olá! Vim pela página da Makro Ceilândia e gostaria de marcar uma consulta.'
+      : 'Olá! Vim pela página da Makro Ceilândia e gostaria de entrar na lista de interesse.';
+    headWa.href = waUrl(baseText);
+    headWa.addEventListener('click', () => track('whatsapp_click', 'header'));
+
+    function leadText() {
+      const goal = OPEN ? 'marcar uma consulta' : 'entrar na lista de interesse';
+      return 'Olá! Vim pela página da Makro Ceilândia. Meu nome é ' + answers.name +
+        ', moro em ' + answers.region + ' e tenho interesse em: ' + answers.interest +
+        '. Gostaria de ' + goal + '.';
+    }
+
+    /* ---------- Mensagens ---------- */
+    function bubble(kind, text) {
+      const m = document.createElement('div');
+      m.className = 'msg ' + kind;
+      const p = document.createElement('p');
+      p.textContent = text;
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      const t = document.createElement('span');
+      t.textContent = clock();
+      meta.append(t);
+      if (kind === 'out') meta.insertAdjacentHTML('beforeend', TICKS);
+      m.append(p, meta);
+      chat.append(m);
+      scrollDown();
+      return m;
+    }
+
+    async function say(text) {
+      statusEl.textContent = 'digitando…';
+      statusEl.classList.add('is-typing');
+      const typing = document.createElement('div');
+      typing.className = 'typing';
+      typing.setAttribute('aria-hidden', 'true');
+      typing.innerHTML = '<i></i><i></i><i></i>';
+      chat.append(typing);
+      scrollDown();
+      await sleep(Math.min(1400, 550 + text.length * 10));
+      typing.remove();
+      statusEl.textContent = 'Ceilândia · online';
+      statusEl.classList.remove('is-typing');
+      bubble('in', text);
+      await sleep(260);
+    }
+    async function sayAll(list) { for (const t of list) await say(t); }
+
+    function userSays(text) {
+      choicesEl.hidden = true;
+      choicesEl.textContent = '';
+      bubble('out', text);
+      return sleep(350);
+    }
+
+    function choose(options, label) {
+      return new Promise((resolve) => {
+        choicesEl.textContent = '';
+        choicesEl.setAttribute('aria-label', label || 'Respostas rápidas');
+        options.forEach((opt) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'chip' + (opt.ghost ? ' ghost' : '');
+          b.textContent = opt.label;
+          b.addEventListener('click', () => resolve(opt));
+          choicesEl.append(b);
+        });
+        choicesEl.hidden = false;
+        scrollDown();
+        const first = choicesEl.querySelector('.chip');
+        if (first) first.focus({ preventScroll: true });
+      });
+    }
+
+    function askText(placeholder) {
+      return new Promise((resolve) => {
+        field.disabled = false;
+        sendBtn.disabled = false;
+        field.placeholder = placeholder;
+        field.focus({ preventScroll: true });
+        const onSubmit = (e) => {
+          e.preventDefault();
+          const value = field.value.replace(/\s+/g, ' ').trim();
+          if (value.length < 2) { field.focus(); return; }
+          composer.removeEventListener('submit', onSubmit);
+          field.value = '';
+          field.disabled = true;
+          sendBtn.disabled = true;
+          field.placeholder = 'Escolha uma opção acima';
+          resolve(value);
+        };
+        composer.addEventListener('submit', onSubmit);
+      });
+    }
+
+    function ctaCard(text, label, href, placement) {
+      const m = document.createElement('div');
+      m.className = 'msg in card';
+      const p = document.createElement('p');
+      p.className = 'card-text';
+      p.textContent = text;
+      const a = document.createElement('a');
+      a.className = 'cta';
+      a.href = href;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.innerHTML = ICON_WA + '<span></span>';
+      a.querySelector('span').textContent = label;
+      a.addEventListener('click', () => track('whatsapp_click', placement));
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.innerHTML = '<span>' + clock() + '</span>';
+      m.append(p, a, meta);
+      chat.append(m);
+      scrollDown();
+      return a;
+    }
+
+    /* ============================================================
+       ROTEIRO DA CONVERSA
+       Copy segue o briefing: sem promessa, sem preco, sem prazo,
+       financiamento sempre "sujeito a analise".
+       ============================================================ */
+    const INTERESTS = [
+      { label: 'Implantes ou protocolo', value: 'Implantes ou protocolo',
+        reply: 'Certo. Para implantes e protocolo, tudo começa com uma avaliação individual: a equipe explica as possibilidades para o seu caso.' },
+      { label: 'Próteses', value: 'Próteses e overdenture',
+        reply: 'Certo. Para próteses e overdenture, a avaliação define as alternativas conforme as condições da sua boca.' },
+      { label: 'Facetas ou lentes', value: 'Facetas ou lentes',
+        reply: 'Certo. Facetas e lentes pedem um planejamento estético individual, com foco em naturalidade e saúde bucal.' },
+      { label: 'Preciso de orientação', value: 'Preciso de orientação',
+        reply: 'Sem problema. A equipe orienta qual é o melhor próximo passo para você.' }
+    ];
+    const REGIONS = ['Ceilândia', 'Sol Nascente/Pôr do Sol', 'Águas Lindas', 'Taguatinga', 'Outra região'];
+
+    const FAQ = [
+      { label: 'Vocês têm financiamento?',
+        a: 'Há possibilidades de pagamento e financiamento próprio. Aprovação, limites, prazos e demais condições estão sujeitos à análise e às regras vigentes.' },
+      { label: 'Atendem aos sábados?',
+        a: 'Sim. O atendimento aos sábados foi previsto até as 12h. A equipe confirma os horários disponíveis com você.' },
+      { label: 'Já fica agendado?',
+        a: OPEN
+          ? 'Ainda não. Depois do seu contato, a equipe apresenta os horários e confirma o agendamento conforme a disponibilidade.'
+          : 'Não. O cadastro registra seu interesse. A equipe entra em contato para apresentar a disponibilidade e concluir o agendamento.' },
+      { label: 'Quanto custa?',
+        a: 'O valor depende do seu caso. Por isso, o orçamento é apresentado depois da avaliação e da definição do plano de tratamento.' }
+    ];
+
+    async function faqLoop(waHref) {
+      for (;;) {
+        const pick = await choose(
+          FAQ.map((f) => ({ label: f.label, faq: f }))
+            .concat([{ label: 'Voltar ao WhatsApp', back: true, ghost: true }]),
+          'Dúvidas frequentes'
+        );
+        if (pick.back) {
+          await userSays(pick.label);
+          await say('Quando quiser, é só tocar no botão e continuar com a equipe.');
+          ctaCard('Continue a conversa com a equipe da Makro.', OPEN ? 'Marcar consulta no WhatsApp' : 'Entrar na lista pelo WhatsApp', waHref, 'chat_final');
+          await sleep(200);
+          continue;
+        }
+        await userSays(pick.label);
+        track('faq_open', 'chat');
+        await say(pick.faq.a);
+      }
+    }
+
+    async function run() {
+      track('lp_view', 'chat');
+      await sleep(500);
+      await say('Olá! Somos a equipe da Makro Odontologia Integrada, aqui em Ceilândia.');
+      await say(OPEN
+        ? 'Nossa unidade já está em Ceilândia. Por aqui você solicita sua avaliação e a equipe apresenta os horários disponíveis.'
+        : 'Nossa unidade de Ceilândia está chegando. Por aqui você entra na lista de interesse e recebe o contato da equipe quando a agenda abrir.');
+      await say('Atendimento de segunda a sábado (sábado até 12h). Os horários completos são confirmados pela equipe.');
+      await say('Pra começar: qual tratamento você procura?');
+
+      const interest = await choose(INTERESTS, 'Qual tratamento você procura?');
+      answers.interest = interest.value;
+      track('chat_step', 'interest');
+      await userSays(interest.label);
+      await say(interest.reply);
+
+      await say('Onde você mora?');
+      const region = await choose(REGIONS.map((r) => ({ label: r })), 'Onde você mora?');
+      answers.region = region.label;
+      track('chat_step', 'region');
+      await userSays(region.label);
+      await say('Anotado.');
+
+      await say('E como podemos chamar você?');
+      const name = await askText('Digite seu nome');
+      answers.name = name;
+      track('chat_step', 'name');
+      await userSays(name);
+
+      const first = name.split(' ')[0];
+      await say('Prazer, ' + first + '!');
+      await say(OPEN
+        ? 'Tudo certo. Toque no botão abaixo para continuar com a equipe pelo WhatsApp e escolher o melhor horário.'
+        : 'Tudo certo. Toque no botão abaixo para continuar com a equipe pelo WhatsApp e entrar na lista de interesse.');
+
+      const href = waUrl(leadText());
+      ctaCard('Você será direcionado ao WhatsApp. Ao continuar, você autoriza o uso dos dados informados para o atendimento, conforme a Política de Privacidade.',
+        OPEN ? 'Marcar consulta no WhatsApp' : 'Entrar na lista pelo WhatsApp', href, 'chat_final');
+      await sleep(500);
+      await say('Se tiver alguma dúvida antes, escolha uma opção abaixo.');
+      await faqLoop(href);
+    }
+
+    run();
+  })();
+  </script>
+</body>
+</html>
