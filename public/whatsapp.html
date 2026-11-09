@@ -278,21 +278,17 @@
        CONFIGURACAO
        - PHONE: DDI+DDD+numero, so digitos. Padrao = telefone da unidade
          usado no app.py da LP (WHATSAPP_NUMBER). Trocar pelo oficial.
-       - MODE: 'prelaunch' (lista de interesse) | 'open' (solicitar avaliacao)
-         Troca manual, nunca pelo relogio (briefing §4).
        ============================================================ */
     /* Uma pagina serve varias cidades: a cidade vem do link (?cidade=slug).
        Para adicionar uma cidade, copie um bloco abaixo. Sem ?cidade (ou slug
        desconhecido) a pagina usa DEFAULT, sem citar nenhuma cidade.
          name    nome exibido (opcional; vazio = nao cita cidade)
          phone   WhatsApp da unidade, DDI+DDD+numero, so digitos
-         mode    'prelaunch' (lista de interesse) | 'open' (marcar consulta)
          hours   texto de atendimento confirmado (opcional; vazio = nao cita)
          regions lista para "Onde voce mora?" (opcional; vazio = nao pergunta) */
     const DEFAULT = {
       name: '',
       phone: '556136862724',
-      mode: 'prelaunch',
       hours: '',
       regions: []
     };
@@ -300,7 +296,6 @@
       ceilandia: {
         name: 'Ceilândia',
         phone: '556136862724',
-        mode: 'prelaunch',
         hours: 'Atendimento de segunda a sábado (sábado até 12h). Os horários completos são confirmados pela equipe.',
         regions: ['Ceilândia', 'Sol Nascente/Pôr do Sol', 'Águas Lindas', 'Taguatinga', 'Outra região']
       }
@@ -310,11 +305,8 @@
     const CITY = Object.assign({}, DEFAULT, CITIES[slug] || {});
     const CONFIG = {
       PHONE: CITY.phone,
-      MODE: CITY.mode,
-      PAGE_TYPE: 'launch_chat'
+      PAGE_TYPE: 'whatsapp_chat'
     };
-    const OPEN = CONFIG.MODE === 'open';
-    const inCity = CITY.name ? ' em ' + CITY.name : '';   // " em X" ou ""
     document.title = 'Makro Odontologia' + (CITY.name ? ' ' + CITY.name : '') + ' | Fale com a equipe';
 
     /* ---------- dataLayer: allowlist estrita (so page_type + placement) ---------- */
@@ -346,14 +338,12 @@
       return 'https://wa.me/' + CONFIG.PHONE + '?text=' + encodeURIComponent(text);
     }
     const fromPage = 'Vim pela página da Makro' + (CITY.name ? ' ' + CITY.name : '');
-    const baseText = OPEN
-      ? 'Olá! ' + fromPage + ' e gostaria de marcar uma consulta.'
-      : 'Olá! ' + fromPage + ' e gostaria de entrar na lista de interesse.';
+    const baseText = 'Olá! ' + fromPage + ' e gostaria de marcar uma consulta.';
     headWa.href = waUrl(baseText);
     headWa.addEventListener('click', () => track('whatsapp_click', 'header'));
 
     function leadText() {
-      const goal = OPEN ? 'marcar uma consulta' : 'entrar na lista de interesse';
+      const goal = 'marcar uma consulta';
       return 'Olá! ' + fromPage + '. Meu nome é ' + answers.name +
         (answers.region ? ', moro em ' + answers.region : '') +
         ' e tenho interesse em: ' + answers.interest +
@@ -488,9 +478,7 @@
       { label: 'Quais os horários?',
         a: CITY.hours || 'Os horários de atendimento são confirmados pela equipe quando você continuar a conversa.' },
       { label: 'Já fica agendado?',
-        a: OPEN
-          ? 'Ainda não. Depois do seu contato, a equipe apresenta os horários e confirma o agendamento conforme a disponibilidade.'
-          : 'Não. O cadastro registra seu interesse. A equipe entra em contato para apresentar a disponibilidade e concluir o agendamento.' },
+        a: 'Ainda não. Depois do seu contato, a equipe apresenta os horários e confirma o agendamento conforme a disponibilidade.' },
       { label: 'Quanto custa?',
         a: 'O valor depende do seu caso. Por isso, o orçamento é apresentado depois da avaliação e da definição do plano de tratamento.' }
     ];
@@ -505,7 +493,7 @@
         if (pick.back) {
           await userSays(pick.label);
           await say('Quando quiser, é só tocar no botão e continuar com a equipe.');
-          ctaCard('Continue a conversa com a equipe da Makro.', OPEN ? 'Marcar consulta no WhatsApp' : 'Entrar na lista pelo WhatsApp', waHref, 'chat_final');
+          ctaCard('Continue a conversa com a equipe da Makro.', 'Marcar consulta no WhatsApp', waHref, 'chat_final');
           await sleep(200);
           continue;
         }
@@ -519,10 +507,8 @@
       track('lp_view', 'chat');
       await sleep(500);
       await say('Olá! Somos a equipe da Makro Odontologia Integrada.');
-      await say(OPEN
-        ? 'Nossa nova unidade' + inCity + ' já está de portas abertas. Por aqui você solicita sua avaliação e a equipe apresenta os horários disponíveis.'
-        : 'Nossa nova unidade' + inCity + ' está chegando. Por aqui você entra na lista de interesse e recebe o contato da equipe quando a agenda abrir.');
-      await say(CITY.hours || 'Os horários de atendimento são confirmados pela equipe.');
+      await say('Vou te ajudar a agendar sua avaliação. Leva menos de um minuto.');
+      if (CITY.hours) await say(CITY.hours);
       await say('Pra começar: qual tratamento você procura?');
 
       const interest = await choose(INTERESTS, 'Qual tratamento você procura?');
@@ -548,13 +534,11 @@
 
       const first = name.split(' ')[0];
       await say('Prazer, ' + first + '!');
-      await say(OPEN
-        ? 'Tudo certo. Toque no botão abaixo para continuar com a equipe pelo WhatsApp e escolher o melhor horário.'
-        : 'Tudo certo. Toque no botão abaixo para continuar com a equipe pelo WhatsApp e entrar na lista de interesse.');
+      await say('Tudo certo. Toque no botão abaixo para continuar com a equipe pelo WhatsApp e escolher o melhor horário.');
 
       const href = waUrl(leadText());
       ctaCard('Você será direcionado ao WhatsApp. Ao continuar, você autoriza o uso dos dados informados para o atendimento, conforme a Política de Privacidade.',
-        OPEN ? 'Marcar consulta no WhatsApp' : 'Entrar na lista pelo WhatsApp', href, 'chat_final');
+        'Marcar consulta no WhatsApp', href, 'chat_final');
       await sleep(500);
       await say('Se tiver alguma dúvida antes, escolha uma opção abaixo.');
       await faqLoop(href);

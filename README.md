@@ -22,5 +22,5 @@ Pages > projeto > Custom domains > Set up a domain.
 ## Antes de publicar de verdade
 - `public/whatsapp.html`: remover `<meta name="robots" content="noindex, nofollow">`
 - `CONFIG.PHONE`: trocar pelo WhatsApp oficial
-- `CONFIG.MODE`: 'prelaunch' ou 'open'
+
 - Link da Politica de Privacidade e rodape regulatorio (CRO) ainda pendentes
